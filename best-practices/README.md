@@ -296,4 +296,16 @@ var target = UIATarget.localTarget();
 var app = target.frontMostApp();
 var tabBar = app.mainWindow().tabBar();
 
+*Logging Test Results and Data
+
+you should log as much information as you can, At a bare minimum, you should log when each test begins and ends, identifying the test performed and recording pass/fail status. 
+
+var testName = "Module 001 Test";
+
+UIALogger.logStart(testName);
+
+//some test code
+
+UIALogger.logPass(testName);
+
 
