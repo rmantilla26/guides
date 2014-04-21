@@ -274,7 +274,7 @@ These are general guidelines and best practices you should follow when developin
 
 * Test the app on all OS versions and device types your app supports.
 
-* Test the app in different screen orientation.
+* Test the app in different screen orientation, When performing a test that involves changing the orientation of the device, it is a good practice to set the rotation at the beginning of the test, then set it back to the original rotation at the end of your test. This practice ensures that your script is always back in a known state.
 
 * Bundle the tests into related modules and run steps to log the test user out and clear the data between modules. The tests have to be decoupled from each other. If you run 50 integration tests one after the other and make a change to the fourth test that alters the app's state in a persistent way, you risk breaking the next 46 tests.
 
@@ -289,6 +289,20 @@ These are general guidelines and best practices you should follow when developin
 
 * You must explicitly stop recording. Completion or termination of your script does not turn off recording, If your app crashes or goes to the background, your script is blocked until the app is frontmost again, at which time the script continues to run.
 
+* Handling Externally Generated Alerts to test push notifications, sms, and call
+
+UIATarget.onAlert = function onAlert(alert) {
+
+    var title = alert.name();
+
+    UIALogger.logWarning("Alert with title '" + title + "' encountered.");
+
+    // return false to use the default handler
+
+    return false;
+
+}
+
 * Simplifying Element Hierarchy Navigation, use global variables to save the instance of most common used attributes like, target, app, tab bar, tableview 
 
 // Switch screen (mode) based on value of variable
@@ -296,15 +310,21 @@ var target = UIATarget.localTarget();
 var app = target.frontMostApp();
 var tabBar = app.mainWindow().tabBar();
 
-*Logging Test Results and Data
-
-you should log as much information as you can, At a bare minimum, you should log when each test begins and ends, identifying the test performed and recording pass/fail status. 
+* Logging Test Results and Data: you should log as much information as you can, At a bare minimum, you should log when each test begins and ends, identifying the test performed and recording pass/fail status, you can even supplement the textual data with screenshots.
 
 var testName = "Module 001 Test";
 
 UIALogger.logStart(testName);
 
 //some test code
+
+UIALogger.logMessage("Starting Module 001 branch 2, validating input.");
+
+//capture a screenshot with a specified name
+
+UIATarget.localTarget().captureScreenWithName("SS001-2_AddedIngredient");
+
+//more test code
 
 UIALogger.logPass(testName);
 
