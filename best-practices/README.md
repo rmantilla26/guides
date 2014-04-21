@@ -249,3 +249,51 @@ In addition to Shell best practices,
 * Prefer `[[` over `test` or `[`.
 * Prefer process substitution over a pipe in `while read` loops.
 * Use `((` or `let`, not `$((` when you don't need the result
+
+
+
+
+Integration Testing For iOS
+-----------
+
+These are general guidelines and best practices you should follow when developing Integration Test for iOS apps
+
+* Integration test is about the correctness of interacting object with each other, it’s about testing behavior, not functions.
+
+* Testing on simulators is not the same as testing on actual devices - test your apps on actual devices under real-life conditions (like loss of internet connection, no gps signal in case your app uses them)
+
+* Test your apps using Automate tool embedded in Instruments. Make sure it does object allocations judiciously and your code doesn't have leaks.
+
+* The Automation instrument only works with apps that have been code signed with a development provisioning profile. Apps signed with a distribution provisioning profile can not be automated with the UI Automation programming interface.
+
+* Simulated actions may not prevent the test device from auto-locking. Before running tests on a device, you should set the Auto-Lock preference to Never.
+
+* Your test script must be a valid executable JavaScript file accessible to the instrument on the host computer. It runs outside your app, so the tested version of your app can be the same version that you submit to the iTunes App store.
+
+* UI Automation uses the accessibility label (if it’s set) to derive a name property for each element.  You must use the UIViewController name followed by the name of the item.
+
+* Test the app on all OS versions and device types your app supports.
+
+* Test the app in different screen orientation.
+
+* Bundle the tests into related modules and run steps to log the test user out and clear the data between modules. The tests have to be decoupled from each other. If you run 50 integration tests one after the other and make a change to the fourth test that alters the app's state in a persistent way, you risk breaking the next 46 tests.
+
+* It is impossible to test every possible user input, but you want to hit all your major error states as well as at least one valid input. It is impossible to test every path through the code, but you want to reasonably simulate the things a user is likely to do and spend a little more effort on the parts of the code that matter most to the user experience.
+
+* Check the state of the screen (mostly via the accessibilityLabel and accessibilityValue properties of screen elements), interact with screen elements, check the state, interact, and so on. 
+
+
+* The API does offer a #import directive that allows you to write smaller, reusable discrete test scripts. For example, if you were to define commonly used functions in a file named TestUtilities.js, you could make those functions available for use in your test script by including in that script the line
+
+#import "<path-to-library-folder>/TestUtilities.js"
+
+* You must explicitly stop recording. Completion or termination of your script does not turn off recording, If your app crashes or goes to the background, your script is blocked until the app is frontmost again, at which time the script continues to run.
+
+* Simplifying Element Hierarchy Navigation, use global variables to save the instance of most common used attributes like, target, app, tab bar, tableview 
+
+// Switch screen (mode) based on value of variable
+var target = UIATarget.localTarget();
+var app = target.frontMostApp();
+var tabBar = app.mainWindow().tabBar();
+
+
