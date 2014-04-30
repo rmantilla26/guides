@@ -250,10 +250,14 @@ These are general guidelines and best practices you should follow when developin
 
 * Simplifying Element Hierarchy Navigation, use global variables to save the instance of most common used attributes like, target, app, tab bar, tableview 
 
+``` 
 // Switch screen (mode) based on value of variable
 var target = UIATarget.localTarget();
+
 var app = target.frontMostApp();
+
 var tabBar = app.mainWindow().tabBar();
+``` 
 
 * Logging Test Results and Data: you should log as much information as you can, At a bare minimum, you should log when each test begins and ends, identifying the test performed and recording pass/fail status, you can even supplement the textual data with screenshots.
 
